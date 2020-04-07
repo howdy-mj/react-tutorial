@@ -48,11 +48,14 @@ import './App.css';
         // this.state.contents.push(
         //   {id: this.max_content_id, title:_title, desc:_desc}
         // ); // 성능 개선할 때 까다로움, 원본을 바꾸는 것
-        var _contents = this.state.contents.concat(
-          {id: this.max_content_id, title:_title, desc:_desc}
-        )
+        // var _contents = this.state.contents.concat(
+        //   {id: this.max_content_id, title:_title, desc:_desc}
+        // ) // 원본을 복제해서 변경
+        var newContetns = Array.from(this.state.contents); // 원본을 복제해서 변경
+        newContetns.push({id: this.max_content_id, title:_title, desc:_desc});
         this.setState({
-          contents: _contents
+          // contents: _contents
+          contents: newContetns
         })
         console.log(_title, _desc);
       }.bind(this)}></CreateContent>
