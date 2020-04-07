@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class TOC extends Component{
   shouldComponentUpdate(newProps, newState){
-    console.log('TOC render shouldComponentUpdate'
+    console.log('==TOC render shouldComponentUpdate'
       ,newProps.data // 추가 됨
       ,this.props.data  // 원본
     );
