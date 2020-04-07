@@ -65,11 +65,12 @@ import './App.css';
       _content = this.getReadContent();
       _article = <UpdateContent data={_content} onSubmit={function(_title, _desc){
         this.max_content_id = this.max_content_id +1;
-        var newContetns = Array.from(this.state.contents); // 원본을 복제해서 변경
-        newContetns.push({id: this.max_content_id, title:_title, desc:_desc});
+        var _contents = this.state.contents.concat(
+          {id: this.max_content_id, title:_title, desc:_desc}
+        ) // 원본을 복제해서 변경
         this.setState({
           // contents: _contents
-          contents: newContetns
+          contents: _contents
         })
         console.log(_title, _desc);
       }.bind(this)}></UpdateContent>
@@ -78,7 +79,6 @@ import './App.css';
   }
   render() {
     // console.log('App render');
-    
     // console.log('render', this);
     return (
       <div className="App">
@@ -117,7 +117,7 @@ import './App.css';
             mode: _mode
           })
         }.bind(this)}></Control>
-        {this.getContent}
+        {this.getContent()}
       </div>
     );
   }
