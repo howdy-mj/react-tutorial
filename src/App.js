@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TOC from "./components/TOC";
-import Content from "./components/Content";
+import ReadContent from "./components/ReadContent";
+import CreateContent from "./components/CreateContent";
 import Subject from './components/Subject';
 import Control from './components/Control';
 import './App.css';
@@ -22,10 +23,11 @@ import './App.css';
   }
   render() {
     // console.log('App render');
-    var _title, _desc = null;
+    var _title, _desc, _article = null;
     if(this.state.mode === 'welcome') {
       _title = this.state.welcome.title;
       _desc = this.state.welcome.desc;
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>;
     } else if (this.state.mode === 'read'){
       var i = 0;
       while(i < this.state.contents.length) {
@@ -37,6 +39,10 @@ import './App.css';
         }
         i += 1;
       }
+      // mode가 read일 때도 똑같이 나와야 함
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>;
+    } else if (this.state.mode === 'create') {
+      _article = <CreateContent></CreateContent>
     }
     // console.log('render', this);
     return (
@@ -76,7 +82,7 @@ import './App.css';
             mode: _mode
           })
         }.bind(this)}></Control>
-        <Content title={_title} desc={_desc}></Content>
+        {_article}
       </div>
     );
   }
