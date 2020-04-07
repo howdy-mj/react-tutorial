@@ -42,37 +42,46 @@ import './App.css';
     } else if (this.state.mode === 'read'){
       var _content = this.getReadContent();
       // mode가 read일 때도 똑같이 나와야 함
-      _article = <ReadContent title={_content._title} desc={_content._desc}></ReadContent>;
+      _article = <ReadContent title={_content.title} desc={_content.desc}></ReadContent>;
     } else if (this.state.mode === 'create') {
-      _article = <CreateContent onSubmit={function(_title, _desc){
-        this.max_content_id = this.max_content_id +1;
-        // this.state.contents.push(
-        //   {id: this.max_content_id, title:_title, desc:_desc}
-        // ); // 성능 개선할 때 까다로움, 원본을 바꾸는 것
-        // var _contents = this.state.contents.concat(
-        //   {id: this.max_content_id, title:_title, desc:_desc}
-        // ) // 원본을 복제해서 변경
-        var newContetns = Array.from(this.state.contents); // 원본을 복제해서 변경
-        newContetns.push({id: this.max_content_id, title:_title, desc:_desc});
-        this.setState({
-          // contents: _contents
-          contents: newContetns
-        })
-        console.log(_title, _desc);
-      }.bind(this)}></CreateContent>
+      _article = <CreateContent onSubmit={
+        function(_title, _desc){
+          this.max_content_id = this.max_content_id +1;
+          // this.state.contents.push(
+          //   {id: this.max_content_id, title:_title, desc:_desc}
+          // ); // 성능 개선할 때 까다로움, 원본을 바꾸는 것
+          // var _contents = this.state.contents.concat(
+          //   {id: this.max_content_id, title:_title, desc:_desc}
+          // ) // 원본을 복제해서 변경
+          var _contents = Array.from(this.state.contents); // 원본을 복제해서 변경
+          _contents.push({id: this.max_content_id, title:_title, desc:_desc});
+          this.setState({
+            // contents: _contents
+            contents: _contents,
+            mode: 'read',
+            selected_content_id:this.max_content_id
+          })
+          console.log(_title, _desc);
+        }.bind(this)}></CreateContent>
     }
     else if (this.state.mode === 'update') {
       _content = this.getReadContent();
-      _article = <UpdateContent data={_content} onSubmit={function(_title, _desc){
-        this.max_content_id = this.max_content_id +1;
-        var _contents = this.state.contents.concat(
-          {id: this.max_content_id, title:_title, desc:_desc}
-        ) // 원본을 복제해서 변경
-        this.setState({
-          // contents: _contents
-          contents: _contents
-        })
-        console.log(_title, _desc);
+      _article = <UpdateContent data={_content} onSubmit={
+        function(_id, _title, _desc){
+          var _contents = Array.from(this.state.contents);
+          var i = 0;
+          while(i < _contents.length) {
+            if (_contents[i].id === _id) {
+              _contents[i] = {id:_id, title:_title, desc:_desc};
+              break;
+            }
+            i += 1;
+          }
+          this.setState({
+            contents: _contents,
+            mode:'read'
+          })
+          // console.log(_title, _desc);
       }.bind(this)}></UpdateContent>
     }
     return _article;
@@ -102,7 +111,8 @@ import './App.css';
           }.bind(this)}>{this.state.subject.title}</a></h1>
           {this.props.sub}
         </header> */}
-        <TOC onChangePage={function(id){
+        <TOC 
+          onChangePage={function(id){
             // debugger;
             // alert('hey');
             this.setState({
