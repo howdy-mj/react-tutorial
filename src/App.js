@@ -42,7 +42,9 @@ import './App.css';
       // mode가 read일 때도 똑같이 나와야 함
       _article = <ReadContent title={_title} desc={_desc}></ReadContent>;
     } else if (this.state.mode === 'create') {
-      _article = <CreateContent></CreateContent>
+      _article = <CreateContent onSubmit={function(_title, _desc){
+        console.log(_title, _desc);
+      }.bind(this)}></CreateContent>
     }
     // console.log('render', this);
     return (
